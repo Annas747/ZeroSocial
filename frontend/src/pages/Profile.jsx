@@ -6,6 +6,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { getImageUrl } from '../config';
 import { useAuth } from '../App';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -54,12 +55,7 @@ function Profile() {
         }
     };
 
-    const getPhotoUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads')) return `http://localhost:3001${url}`;
-        return url;
-    };
+
 
     const formatTime = (timestamp) => {
         const diff = Date.now() - new Date(timestamp);
@@ -92,14 +88,14 @@ function Profile() {
             <div className="profile-header-wrapper">
                 <div
                     className="profile-cover-img"
-                    style={{ backgroundImage: profile?.coverPhoto ? `url(${getPhotoUrl(profile.coverPhoto)})` : 'linear-gradient(135deg, #1a1a2e, #16213e)' }}
+                    style={{ backgroundImage: profile?.coverPhoto ? `url(${getImageUrl(profile.coverPhoto)})` : 'linear-gradient(135deg, #1a1a2e, #16213e)' }}
                     onClick={() => isOwnProfile && coverPhotoRef.current?.click()}
                 ></div>
 
                 <div className="profile-info-bar">
                     <div
                         className="profile-main-photo"
-                        style={{ backgroundImage: profile?.profilePhoto ? `url(${getPhotoUrl(profile.profilePhoto)})` : undefined }}
+                        style={{ backgroundImage: profile?.profilePhoto ? `url(${getImageUrl(profile.profilePhoto)})` : undefined }}
                         onClick={() => isOwnProfile && profilePhotoRef.current?.click()}
                     >
                         {!profile?.profilePhoto && <span>{profile?.displayName?.[0] || '?'}</span>}

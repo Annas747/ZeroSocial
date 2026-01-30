@@ -16,7 +16,7 @@ const postsRoutes = require('./routes/posts');
 const usersRoutes = require('./routes/users');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -57,7 +57,11 @@ const upload = multer({
 app.set('upload', upload);
 
 // Middleware
-app.use(cors()); // Allow frontend to connect
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true
+};
+app.use(cors(corsOptions)); // Allow frontend to connect
 app.use(express.json()); // Parse JSON bodies
 
 // Serve uploaded files statically

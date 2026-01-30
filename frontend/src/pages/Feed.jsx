@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getImageUrl } from '../config';
 import { Link } from 'react-router-dom';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -52,19 +53,14 @@ function Feed() {
 
     useEffect(() => { fetchPosts(); }, []);
 
-    const getPhotoUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads')) return `http://localhost:3001${url}`;
-        return url;
-    };
+
 
     return (
         <div className="fb-feed-page">
             {/* Left Sidebar */}
             <aside className="fb-sidebar-left">
                 <Link to={`/profile/${user?.id}`} className="sidebar-link user-link">
-                    <div className="sidebar-avatar" style={{ backgroundImage: user?.profilePhoto ? `url(${getPhotoUrl(user.profilePhoto)})` : undefined }}>
+                    <div className="sidebar-avatar" style={{ backgroundImage: user?.profilePhoto ? `url(${getImageUrl(user.profilePhoto)})` : undefined }}>
                         {!user?.profilePhoto && (user?.displayName?.[0] || '?')}
                     </div>
                     <span>{user?.displayName || user?.username}</span>
@@ -97,7 +93,7 @@ function Feed() {
                         <div key={story.id} className={`story-card ${story.isCreate ? 'create-story' : ''}`}>
                             {story.isCreate ? (
                                 <>
-                                    <div className="story-bg-user" style={{ backgroundImage: user?.profilePhoto ? `url(${getPhotoUrl(user.profilePhoto)})` : 'linear-gradient(135deg, #667eea, #764ba2)' }}></div>
+                                    <div className="story-bg-user" style={{ backgroundImage: user?.profilePhoto ? `url(${getImageUrl(user.profilePhoto)})` : 'linear-gradient(135deg, #667eea, #764ba2)' }}></div>
                                     <div className="story-create-btn">+</div>
                                     <span className="story-name">Create story</span>
                                 </>

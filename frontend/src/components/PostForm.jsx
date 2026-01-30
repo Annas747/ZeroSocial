@@ -5,6 +5,7 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from '../App';
+import { getImageUrl } from '../config';
 
 function PostForm({ onPostCreated }) {
     const { user } = useAuth();
@@ -15,12 +16,7 @@ function PostForm({ onPostCreated }) {
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef(null);
 
-    const getPhotoUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads')) return `http://localhost:3001${url}`;
-        return url;
-    };
+
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
@@ -66,7 +62,7 @@ function PostForm({ onPostCreated }) {
         <div className="create-post-card">
             <form onSubmit={handleSubmit}>
                 <div className="create-post-row">
-                    <div className="create-avatar" style={{ backgroundImage: user?.profilePhoto ? `url(${getPhotoUrl(user.profilePhoto)})` : undefined }}>
+                    <div className="create-avatar" style={{ backgroundImage: user?.profilePhoto ? `url(${getImageUrl(user.profilePhoto)})` : undefined }}>
                         {!user?.profilePhoto && (user?.displayName?.[0] || '?')}
                     </div>
                     {!isExpanded ? (

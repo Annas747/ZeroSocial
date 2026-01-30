@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
+import { getImageUrl } from '../config';
 
 function Navbar() {
     const { user, logout } = useAuth();
@@ -13,12 +14,7 @@ function Navbar() {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
 
-    const getPhotoUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads')) return `http://localhost:3001${url}`;
-        return url;
-    };
+
 
     const isActive = (path) => location.pathname === path;
 
@@ -121,7 +117,7 @@ function Navbar() {
                     <div
                         className="avatar-img"
                         style={{
-                            backgroundImage: user?.profilePhoto ? `url(${getPhotoUrl(user.profilePhoto)})` : undefined
+                            backgroundImage: user?.profilePhoto ? `url(${getImageUrl(user.profilePhoto)})` : undefined
                         }}
                     >
                         {!user?.profilePhoto && (user?.displayName?.[0] || '?')}

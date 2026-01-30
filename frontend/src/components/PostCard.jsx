@@ -6,6 +6,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../App';
+import { getImageUrl } from '../config';
 
 function PostCard({ post, onUpdate }) {
     const { user } = useAuth();
@@ -14,12 +15,7 @@ function PostCard({ post, onUpdate }) {
 
     const isLiked = post.likedBy?.includes(user.id);
 
-    const getPhotoUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads')) return `http://localhost:3001${url}`;
-        return url;
-    };
+
 
     const handleLike = async () => {
         try {
@@ -52,7 +48,7 @@ function PostCard({ post, onUpdate }) {
     return (
         <div className="fb-post-card">
             <div className="post-top">
-                <Link to={`/profile/${post.userId}`} className="post-user-avatar" style={{ backgroundImage: post.profilePhoto ? `url(${getPhotoUrl(post.profilePhoto)})` : undefined }}>
+                <Link to={`/profile/${post.userId}`} className="post-user-avatar" style={{ backgroundImage: post.profilePhoto ? `url(${getImageUrl(post.profilePhoto)})` : undefined }}>
                     {!post.profilePhoto && (post.displayName?.[0] || post.username?.[0] || '?')}
                 </Link>
                 <div className="post-user-meta">
@@ -64,7 +60,7 @@ function PostCard({ post, onUpdate }) {
             </div>
 
             {post.content && <p className="post-body-text">{post.content}</p>}
-            {post.imageUrl && <img src={getPhotoUrl(post.imageUrl)} alt="" className="post-image-full" />}
+            {post.imageUrl && <img src={getImageUrl(post.imageUrl)} alt="" className="post-image-full" />}
 
             <div className="post-reactions">
                 <div className="reactions-icons">

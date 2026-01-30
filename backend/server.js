@@ -67,6 +67,18 @@ app.use(express.json()); // Parse JSON bodies
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadsDir));
 
+// Serve frontend static files (production)
+const frontendDist = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+    app.use(express.static(frontendDist));
+
+    // Handle SPA routing - send index.html for all other routes
+    app.get('*', (req, res, next) => {
+        if (req.url.startsWith('/api')) return next();
+        res.sendFile(path.join(frontendDist, 'index.html'));
+    });
+}
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
